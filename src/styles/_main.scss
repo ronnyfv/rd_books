@@ -1,0 +1,17 @@
+@import "variables";
+
+main {
+  z-index: $main-index;
+  font-size: 90%;
+  background-color: $main-background;
+  border-right: 1px solid $main-border;
+  border-left: 1px solid $main-border;
+  min-height: 100vh;
+  padding: $header-height 10px 20px 10px;
+}
+
+@media only screen and (min-width: 650px) {
+  main {
+    margin-left: $nav-width;
+  }
+}

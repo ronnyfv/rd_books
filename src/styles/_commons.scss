@@ -1,0 +1,22 @@
+@import "variables";
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.border-blue {
+  height: 4px;
+  width: 48px;
+  border-radius: 5px;
+  background-color: #7fc1fc;
+}
+
+.m-t-15 {
+  margin-top: 15px;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}

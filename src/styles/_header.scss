@@ -1,0 +1,38 @@
+@import "variables";
+
+header {
+  z-index: $header-index;
+  height: $header-height;
+  width: 100%;
+  background-color: $header-background;
+  border-bottom: 1px solid $header-border;
+  position: fixed;
+
+  .mobile-icon {
+    float: left;
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 120%;
+  }
+
+  .title {
+    float: left;
+    display: inline-block;
+    padding: 8px 5px;
+
+    h1 {
+      font-size: 100%;
+      margin: 0;
+    }
+  }
+}
+
+@media only screen and (min-width: 650px) {
+  header {
+    .mobile-icon {
+      i {
+        display: none;
+      }
+    }
+  }
+}

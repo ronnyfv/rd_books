@@ -28,6 +28,6 @@ const mapStateToProps = createStructuredSelector({
     // ...
 });
 
-// injeta o dispatch e o state no component Home
+// injeta o dispatch e o state no component FavoriteContainer
 // react-redux irá obter todos os atributos e funções criadas e injetara no component como props
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteContainer);

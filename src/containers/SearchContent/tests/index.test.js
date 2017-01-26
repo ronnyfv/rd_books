@@ -6,6 +6,8 @@ import { mount } from 'enzyme';
 import { SearchContainer, mapDispatchToProps } from '../index';
 import configureStore from '../../../store';
 
+import Sidebar from '../../../components/Sidebar';
+
 describe('<SearchContainer />', () => {
     let store;
 
@@ -13,13 +15,13 @@ describe('<SearchContainer />', () => {
         store = configureStore({}, browserHistory);
     });
 
-    it('deve renderizar o header do conteúdo', () => {
+    it('deve renderizar a sidebar', () => {
         const renderedComponent = mount(
             <Provider store={store}>
-                <SearchContainer />
+                <SearchContainer showSidebar={false} />
             </Provider>
         );
-        expect(renderedComponent.contains(<h2>Procurar</h2>)).toEqual(true);
+        expect(renderedComponent.contains(<Sidebar showSidebar={false} />)).toEqual(true);
     });
 
     describe('mapDispatchToProps', () => {

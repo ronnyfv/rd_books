@@ -4,15 +4,16 @@ import _ from 'lodash';
 
 import appReducer from './containers/shared/reducer';
 
-
-// Initial routing state
+/**
+ * rota inicial da aplicação. usado pelo react-router-redux
+ */
 const routeInitialState = {
     locationBeforeTransitions: null,
 };
 
 
 /**
- * Merge route into the global application state
+ * Adiciona route no app state.
  */
 function routeReducer(state = routeInitialState, action) {
     switch (action.type) {
@@ -29,7 +30,7 @@ function routeReducer(state = routeInitialState, action) {
 
 
 /**
- * Creates the main reducer with the asynchronously loaded ones
+ * Combina os reducers para criar o reducer principal da aplicação
  */
 export default function createReducer() {
     return combineReducers({
