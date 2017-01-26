@@ -25,7 +25,7 @@ const store = configureStore(initialState, browserHistory);
 function init() {
     ReactDOM.render(
         <Provider store={store}>
-            <Router history={browserHistory}>
+            <Router history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
                 {routes()}
             </Router>
         </Provider>,

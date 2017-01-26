@@ -7,16 +7,16 @@ function Sidebar(props) {
     return (
         <nav className={showSidebar ? 'open' : null}>
             <div className="m-t-15">
-                <div className="row m-b-20">
+                <div className="row m-b-40">
                     <ul className="menu">
-                        <li className={`item selected`}>
-                            <Link to={'/procura'}>
+                        <li className={`item`}>
+                            <Link activeClassName="active" to={'/'} onlyActiveOnIndex>
                                 <i className="fa fa-search" />
                                 <span>Procura</span>
                             </Link>
                         </li>
                         <li className={`item`}>
-                            <Link to={'/favoritos'}>
+                            <Link activeClassName="active" to={'/favoritos'} onlyActiveOnIndex>
                                 <i className="fa fa-star" />
                                 <span>Favoritos</span>
                             </Link>

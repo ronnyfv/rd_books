@@ -27,18 +27,18 @@ nav {
     > .item {
       margin-bottom: 15px;
 
-      &.selected {
-        > a {
-          background-color: #ffffff;
-        }
-      }
-
       > a {
+        border: 1px solid transparent;
         display: inline-block;
         width: 100%;
         border-radius: 3px;
         padding: 5px;
-        transition: background-color 0.2s;
+        transition: background-color 0.2s, border 0.2s;
+
+        &.active {
+          border: 1px solid #f3f3f3;
+          background-color: #ffffff;
+        }
 
         &:hover {
           background-color: #ffffff;

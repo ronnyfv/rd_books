@@ -52,7 +52,7 @@ function createConfig(isDebug) {
     };
 
     const clientEntry = [
-        'babel-polyfill',
+        // 'babel-polyfill',
         './src/main.js',
     ];
 

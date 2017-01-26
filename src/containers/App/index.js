@@ -6,6 +6,7 @@ import { selectAppShowSidebar } from '../shared/selectors';
 import { toggleSidebarAction } from '../shared/actions';
 
 import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 
 export class AppContainer extends React.Component {
     render() {
@@ -14,7 +15,8 @@ export class AppContainer extends React.Component {
         return (
             <div>
                 <Header handleMobileButton={handleMobileButton} showSidebar={showSidebar} />
-                <section className="content">
+                <section className="wrapper">
+                    <Sidebar showSidebar={showSidebar} />
                     {React.Children.toArray(children)}
                 </section>
                 <div className={`navbar-overlay ${showSidebar ? 'open' : null}`} onClick={handleMobileButton}></div>

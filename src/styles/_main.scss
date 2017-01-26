@@ -8,6 +8,47 @@ main {
   border-left: 1px solid $main-border;
   min-height: 100vh;
   padding: $header-height 10px 20px 10px;
+
+  > .content {
+    margin-top: 15px;
+  }
+
+  .book-list-info {
+    text-align: right;
+    font-size: 80%;
+  }
+
+  .book-list {
+    .book-item {
+      margin-bottom: 10px;
+      border-radius: 2px;
+      padding: 5px 10px;
+      border: 1px solid #e6e6e6;
+
+      .title {
+        font-size: 110%;
+      }
+
+      .author {
+        font-size: 80%;
+        margin-bottom: 10px;
+      }
+
+      .description {
+        font-size: 90%;
+      }
+
+      .stats-and-actions {
+        margin: 0 5px;
+        border-top: 1px solid #e6e6e6;
+      }
+    }
+  }
+
+  .book-pagination {
+    font-size: 90%;
+    text-align: center;
+  }
 }
 
 @media only screen and (min-width: 650px) {

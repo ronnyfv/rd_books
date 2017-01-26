@@ -4,9 +4,10 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import configureStore from '../../../store';
-import { AppContainer, mapDispatchToProps } from '../index';
-
 import { toggleSidebarAction } from '../../shared/actions';
+
+import { AppContainer, mapDispatchToProps } from '../index';
+import Sidebar from '../../../components/Sidebar';
 
 describe('<AppContainer />', () => {
     let store;
@@ -32,21 +33,32 @@ describe('<AppContainer />', () => {
         expect(renderedComponent.contains(children)).toEqual(true);
     });
 
+    it('deve renderizar a sidebar', () => {
+        const renderedComponent = mount(
+            <Provider store={store}>
+                <AppContainer showSidebar={false} handleMobileButton={handleMobileButton} />
+            </Provider>
+        );
+        expect(renderedComponent.contains(<Sidebar showSidebar={false} />)).toEqual(true);
+    });
+
     describe('mapDispatchToProps', () => {
-        it('deve conter handleMobileButton', () => {
-            const dispatch = jest.fn();
-            const result = mapDispatchToProps(dispatch);
+        describe('handleMobileButton', () => {
+            it('deve conter handleMobileButton', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
 
-            expect(result.handleMobileButton).toBeDefined();
-        });
+                expect(result.handleMobileButton).toBeDefined();
+            });
 
-        it('should invocar toggleSidebarAction quando chamado', () => {
-            const dispatch = jest.fn();
-            const result = mapDispatchToProps(dispatch);
+            it('deve invocar toggleSidebarAction quando chamado', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
 
-            result.handleMobileButton();
+                result.handleMobileButton();
 
-            expect(dispatch).toHaveBeenCalledWith(toggleSidebarAction());
+                expect(dispatch).toHaveBeenCalledWith(toggleSidebarAction());
+            });
         });
     });
 });

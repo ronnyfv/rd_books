@@ -1,4 +1,9 @@
-import { HIDE_SIDEBAR, SHOW_SIDEBAR, TOGGLE_SIDEBAR } from './constants';
+import {
+    HIDE_SIDEBAR,
+    SHOW_SIDEBAR,
+    TOGGLE_SIDEBAR,
+    CHANGE_ACTIVE_PAGE,
+} from './constants';
 
 export function hideSidebarAction() {
     return {
@@ -15,5 +20,13 @@ export function showSidebarAction() {
 export function toggleSidebarAction() {
     return {
         type: TOGGLE_SIDEBAR,
+    };
+}
+
+export function chageActivePageAction(target, activePage) {
+    return {
+        type: CHANGE_ACTIVE_PAGE,
+        target,
+        activePage,
     };
 }

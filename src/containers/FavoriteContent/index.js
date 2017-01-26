@@ -1,31 +1,89 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import {
+    selectAppFavoriteIsError,
+    selectAppFavoriteIsFinished,
+    selectAppFavoriteIsLoading,
+    selectAppFavoriteQuery,
+    selectAppFavoriteQueryResult,
+} from '../shared/selectors';
+
+import { chageActivePageAction } from '../shared/actions';
+
+
+import List from '../../components/List';
+import BookBox from '../../components/BookBox';
+
 export class FavoriteContainer extends React.Component {
     render() {
+        const { isError, isFinished, isLoading, query, queryResult, handlePageChange } = this.props;
+
+        let customMessage = null;
+
+        if (isLoading) {
+            customMessage = (
+                <span>Aguarde, carregando resultados...</span>
+            );
+        } else if (isFinished && isError) {
+            customMessage = (
+                <span>Desculpe, ocorreu um erro ao tentar obter os livros.</span>
+            );
+        } else if (isFinished && queryResult.length === 0) {
+            customMessage = (
+                <span>Não foi encontrado nenhum livro.</span>
+            );
+        }
+
         return (
-            <div>
-                <h2>FavoriteContainer</h2>
-            </div>
+            <main>
+                <div className="content">
+                    <div className="row">
+                        <h3 className="text-uppercase">Resultados dos seus favoritos</h3>
+                        <div className="border-blue m-b-20"></div>
+                    </div>
+
+                    <div className="row">
+                        <List queryResult={queryResult} query={query} handlePageChange={handlePageChange} Item={BookBox} customMessage={customMessage} />
+                    </div>
+                </div>
+            </main>
         );
     }
 }
 
 
 FavoriteContainer.propTypes = {
+    isError: PropTypes.bool.isRequired,
+    isFinished: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    query: PropTypes.object,
+    queryResult: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+    ]),
+    handlePageChange: PropTypes.func.isRequired,
 };
 
 // cria funções com acesso ao dispatch, dispachando actions
 export function mapDispatchToProps(dispatch) {
     return {
-        dispatch,
+        handlePageChange: (evt) => {
+            if (typeof evt.selected !== "undefined") {
+                dispatch(chageActivePageAction('favorite', evt.selected));
+            }
+        },
     };
 }
 
 // usa o reselect para obter os dados salvos no store
 const mapStateToProps = createStructuredSelector({
-    // ...
+    isError: selectAppFavoriteIsError(),
+    isFinished: selectAppFavoriteIsFinished(),
+    isLoading: selectAppFavoriteIsLoading(),
+    query: selectAppFavoriteQuery(),
+    queryResult: selectAppFavoriteQueryResult(),
 });
 
 // injeta o dispatch e o state no component FavoriteContainer
