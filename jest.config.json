@@ -1,0 +1,22 @@
+{
+  "collectCoverageFrom": [
+    "src/**/*.{js}",
+    "!src/**/*.test.{js}",
+    "!src/main.js",
+    "!src/routes.js"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "statements": 98,
+      "branches": 91,
+      "functions": 98,
+      "lines": 98
+    }
+  },
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "setupTestFrameworkScriptFile": "<rootDir>/tests/init.js",
+  "testRegex": "tests/.*\\.test\\.js$"
+}
