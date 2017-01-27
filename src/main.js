@@ -33,6 +33,7 @@ import { selectLocationState } from './containers/shared/selectors';
 const initialState = {};
 const store = configureStore(initialState, browserHistory);
 
+// adiciona router ao redux, todas as alterações de location serão salvas na store
 const history = syncHistoryWithStore(browserHistory, store, {
     selectLocationState: selectLocationState(),
 });

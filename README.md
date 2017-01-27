@@ -1,6 +1,8 @@
 # rd books
 
 Projeto desafio.
+Live: [https://rd-books-ronny.herokuapp.com/](https://rd-books-ronny.herokuapp.com/) 
+Obs: heroku free tier, pode demorar até 30 segundos para iniciar depois de inativo por algum tempo
 
 ## Sobre
 

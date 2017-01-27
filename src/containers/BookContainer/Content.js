@@ -25,14 +25,6 @@ function Content(props) {
                     </div>
                 </div>
             </div>
-            <div className="row stats">
-                <h3 className="text-uppercase">Resumo</h3>
-                <div className="border-blue m-b-10"></div>
-            </div>
-            <div className="row prices">
-                <h3 className="text-uppercase">Preços</h3>
-                <div className="border-blue m-b-10"></div>
-            </div>
         </div>
     );
 }
