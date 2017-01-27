@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import { BookContainer, mapDispatchToProps } from '../index';
 import configureStore from '../../../store';
 
-import { requestLoadBookAction } from '../../shared/actions';
+import { requestBookLoadAction } from '../actions';
 
 describe('<BookContainer />', () => {
     let store;
@@ -81,14 +81,14 @@ describe('<BookContainer />', () => {
                 expect(result.loadBook).toBeDefined();
             });
 
-            it('deve invocar requestLoadBookAction quando chamado', () => {
+            it('deve invocar requestBookLoadAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const id = 'teste';
 
                 result.loadBook(id);
 
-                expect(dispatch).toHaveBeenCalledWith(requestLoadBookAction(id));
+                expect(dispatch).toHaveBeenCalledWith(requestBookLoadAction(id));
             });
         });
     });

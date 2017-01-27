@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 
-import {
-    requestLoadBookAction,
-} from '../shared/actions';
-
+import { requestBookLoadAction } from './actions';
 import {
     selectAppBookError,
     selectAppBookIsFinished,
     selectAppBookIsLoading,
     selectAppBookData,
-} from '../shared/selectors';
+} from './selectors';
 
 import Content from './Content';
 
@@ -76,7 +73,7 @@ BookContainer.propTypes = {
 export function mapDispatchToProps(dispatch) {
     return {
         loadBook: (id) => {
-            dispatch(requestLoadBookAction(id));
+            dispatch(requestBookLoadAction(id));
         },
     };
 }

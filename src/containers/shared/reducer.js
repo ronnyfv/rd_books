@@ -1,25 +1,36 @@
 import _ from 'lodash';
 
 import {
-    // gerais
     TOGGLE_SIDEBAR,
     SHOW_SIDEBAR,
     HIDE_SIDEBAR,
-
-    // procura
-    CHANGE_ACTIVE_PAGE_SEARCH,
-    CHANGE_ACTIVE_PAGE_FAVORITE,
-    SET_STATUS_SEARCH_LOADING,
-    SET_STATUS_SEARCH_SUCCESS,
-    SET_STATUS_SEARCH_ERROR,
-
-    // livro
-    REQUEST_LOAD_BOOK,
-    SET_STATUS_BOOK_SUCCESS,
-    SET_STATUS_BOOK_ERROR,
 } from './constants';
 
-/* eslint-disable quote-props, comma-dangle */
+/**
+ * FAVORITES
+ */
+import {} from '../FavoriteContent/constants';
+
+/**
+ * SEARCH IMPORTS
+ */
+import {
+    CHANGE_SEARCH_ACTIVE_PAGE,
+    SET_SEARCH_STATUS_LOADING,
+    SET_SEARCH_STATUS_ERROR,
+    SET_SEARCH_STATUS_SUCCESS,
+} from '../SearchContent/constants';
+
+/**
+ * BOOK IMPORTS
+ */
+import {
+    SET_BOOK_STATUS_SUCCESS,
+    SET_BOOK_STATUS_LOADING,
+    SET_BOOK_STATUS_ERROR,
+    REQUEST_BOOK_LOAD,
+} from '../BookContainer/constants';
+
 
 // Estado inicial da aplicação
 const initialState = {
@@ -62,9 +73,13 @@ const initialState = {
     },
 };
 
+
 function appReducer(state = initialState, action) {
     switch (action.type) {
 
+        /**
+         * comuns
+         */
         case HIDE_SIDEBAR:
             return _.merge({}, state, {
                 ui: {
@@ -86,80 +101,87 @@ function appReducer(state = initialState, action) {
                 },
             });
 
-        case CHANGE_ACTIVE_PAGE_SEARCH:
+        /**
+         * SEARCH
+         */
+        case CHANGE_SEARCH_ACTIVE_PAGE:
             return _.merge({}, state, {
                 search: {
                     query: {
                         activePage: action.activePage,
-                    }
-                }
+                    },
+                },
             });
 
-        case CHANGE_ACTIVE_PAGE_FAVORITE:
+        case SET_SEARCH_STATUS_LOADING:
             return _.merge({}, state, {
-                favorite: {
-                    query: {
-                        activePage: action.activePage,
-                    }
-                }
-            });
-
-        case SET_STATUS_SEARCH_LOADING:
-            return _.merge({}, state, {
-                [action.target]: {
+                search: {
                     error: undefined,
                     isFinished: false,
                     isLoading: true,
-                }
+                },
             });
 
-        case SET_STATUS_SEARCH_SUCCESS:
+        case SET_SEARCH_STATUS_SUCCESS:
             return _.merge({}, state, {
-                [action.target]: {
+                search: {
                     error: undefined,
                     isFinished: true,
                     isLoading: false,
                     query: {
                         total: action.totalItems,
                     },
-                    queryResult: action.items
-                }
+                    queryResult: action.items,
+                },
             });
 
-        case SET_STATUS_SEARCH_ERROR:
+        case SET_SEARCH_STATUS_ERROR:
             return _.merge({}, state, {
-                [action.target]: {
+                search: {
                     error: action.error,
                     isFinished: true,
                     isLoading: false,
-                }
+                },
             });
 
-        case REQUEST_LOAD_BOOK:
+        /**
+         * BOOK
+         */
+        case REQUEST_BOOK_LOAD:
             return _.merge({}, state, {
                 book: {
                     id: action.bookId,
-                }
+                },
             });
 
-        case SET_STATUS_BOOK_SUCCESS:
+        case SET_BOOK_STATUS_SUCCESS:
             return _.merge({}, state, {
                 book: {
                     error: undefined,
                     isFinished: true,
                     isLoading: false,
                     data: action.data,
-                }
+                },
             });
 
-        case SET_STATUS_BOOK_ERROR:
+        case SET_BOOK_STATUS_ERROR:
             return _.merge({}, state, {
                 book: {
                     error: action.error,
                     isFinished: true,
                     isLoading: false,
                     data: undefined,
-                }
+                },
+            });
+
+        case SET_BOOK_STATUS_LOADING:
+            return _.merge({}, state, {
+                book: {
+                    error: undefined,
+                    isFinished: false,
+                    isLoading: true,
+                    data: undefined,
+                },
             });
 
         default:

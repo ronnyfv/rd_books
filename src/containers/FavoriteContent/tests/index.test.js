@@ -4,8 +4,9 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import { FavoriteContainer, mapDispatchToProps } from '../index';
-import { changeActivePageFavoriteAction, requestLoadFavoriteAction } from '../../shared/actions';
 import configureStore from '../../../store';
+
+import { changeFavoriteActivePageAction, requestFavoriteLoadAction } from '../actions';
 
 describe('<FavoriteContainer />', () => {
     let store;
@@ -44,7 +45,7 @@ describe('<FavoriteContainer />', () => {
                 expect(result.handlePageChange).toBeDefined();
             });
 
-            it('deve invocar changeActivePageFavoriteAction quando chamado', () => {
+            it('deve invocar changeFavoriteActivePageAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const page = 1;
@@ -53,7 +54,7 @@ describe('<FavoriteContainer />', () => {
                     selected: page,
                 });
 
-                expect(dispatch).toHaveBeenCalledWith(changeActivePageFavoriteAction(page));
+                expect(dispatch).toHaveBeenCalledWith(changeFavoriteActivePageAction(page));
             });
         });
 
@@ -65,13 +66,13 @@ describe('<FavoriteContainer />', () => {
                 expect(result.loadFavoriteBooks).toBeDefined();
             });
 
-            it('deve invocar requestLoadFavoriteAction quando chamado', () => {
+            it('deve invocar requestFavoriteLoadAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
 
                 result.loadFavoriteBooks();
 
-                expect(dispatch).toHaveBeenCalledWith(requestLoadFavoriteAction());
+                expect(dispatch).toHaveBeenCalledWith(requestFavoriteLoadAction());
             });
         });
     });

@@ -6,8 +6,6 @@ import {
     showSidebarAction,
     hideSidebarAction,
     toggleSidebarAction,
-    changeActivePageFavoriteAction,
-    changeActivePageSearchAction,
 } from '../actions';
 
 describe('appReducer', () => {
@@ -87,41 +85,5 @@ describe('appReducer', () => {
         });
 
         expect(appReducer(state, toggleSidebarAction())).toEqual(stateAfter);
-    });
-
-    it('deve receber e tratar a action changeActivePageFavoriteAction', () => {
-        const page = 1;
-
-        const action = {
-            activePage: page,
-        };
-
-        const stateAfter = _.merge({}, state, {
-            favorite: {
-                query: {
-                    activePage: action.activePage,
-                },
-            },
-        });
-
-        expect(appReducer(state, changeActivePageFavoriteAction(page))).toEqual(stateAfter);
-    });
-
-    it('deve receber e tratar a action changeActivePageSearchAction', () => {
-        const page = 1;
-
-        const action = {
-            activePage: page,
-        };
-
-        const stateAfter = _.merge({}, state, {
-            search: {
-                query: {
-                    activePage: action.activePage,
-                },
-            },
-        });
-
-        expect(appReducer(state, changeActivePageSearchAction(page))).toEqual(stateAfter);
     });
 });

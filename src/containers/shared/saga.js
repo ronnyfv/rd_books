@@ -4,32 +4,31 @@ import _ from 'lodash';
 import request from '../../helpers/request';
 import formatBookListVolume from '../../helpers/book';
 
-import {
-    REQUEST_LOAD_SEARCH,
-    REQUEST_LOAD_FAVORITE,
-    CHANGE_ACTIVE_PAGE_SEARCH,
-    CHANGE_ACTIVE_PAGE_FAVORITE,
-    REQUEST_LOAD_BOOK,
-} from './constants';
+/**
+ *  BOOK IMPORTS
+ */
+import { REQUEST_BOOK_LOAD } from '../BookContainer/constants';
+import { setBookStatusErrorAction, setBookStatusLoadingAction, setBookStatusSuccessAction } from '../BookContainer/actions';
+import { selectAppBookId } from '../BookContainer/selectors';
 
-import {
-    setStatusLoadingSearchAction,
-    setStatusLoadingFavoriteAction,
-    setStatusSuccessSearchAction,
-    setStatusFailSearchAction,
-    setStatusLoadingBookAction,
-    setStatusSuccessBookAction,
-    setStatusFailBookAction,
-} from './actions';
+/**
+ * FAVORITE IMPORTS
+ */
+import { REQUEST_FAVORITE_LOAD, CHANGE_FAVORITE_ACTIVE_PAGE } from '../FavoriteContent/constants';
+import { setFavoriteStatusLoadingAction } from '../FavoriteContent/actions';
+import { selectAppFavoriteQuery } from '../FavoriteContent/selectors';
 
-import {
-    selectAppSearchQuery,
-    selectAppBookId,
-} from './selectors';
+/**
+ * SEARCH IMPORTS
+ */
+import { REQUEST_SEARCH_LOAD, CHANGE_SEARCH_ACTIVE_PAGE } from '../SearchContent/constants';
+import { setSearchStatusLoadingAction, setSearchStatusErrorAction, setSearchStatusSuccessAction } from '../SearchContent/actions';
+import { selectAppSearchQuery } from '../SearchContent/selectors';
+
 
 function* loadBooksSearch() {
     // muda o status do loading: loading = true, finished: false, error: false
-    yield put(setStatusLoadingSearchAction());
+    yield put(setSearchStatusLoadingAction());
 
     // usando reselect, obtem atributo 'query' referente ao objeto 'search' da store
     const query = yield select(selectAppSearchQuery());
@@ -51,24 +50,29 @@ function* loadBooksSearch() {
         const result = yield call(request, requestURL);
 
         // caso chamada tenha retornado e sem erro, usa o 'put' para salvar na store os dados recebidos
-        yield put(setStatusSuccessSearchAction(formatBookListVolume(result.items), result.totalItems));
+        yield put(setSearchStatusSuccessAction(formatBookListVolume(result.items), result.totalItems));
     } catch (err) {
         const error = {
             title: 'Erro desconhecido',
             mensagem: 'Ocorreu um erro ao tentar obter a lista de livros',
         };
-        yield put(setStatusFailSearchAction(error));
+        yield put(setSearchStatusErrorAction(error));
     }
 }
 
+
 function* loadBooksFavorites() {
     // muda o status do loading: loading = true, finished: false, error: false
-    yield put(setStatusLoadingFavoriteAction());
+    yield put(setFavoriteStatusLoadingAction());
+
+    // usando reselect, obtem atributo 'id' referente a url acessada
+    const id = yield select(selectAppFavoriteQuery());
 }
+
 
 function* loadBook() {
     // muda o status do loading: loading = true, finished: false, error: false
-    yield put(setStatusLoadingBookAction());
+    yield put(setBookStatusLoadingAction());
 
     // usando reselect, obtem atributo 'id' referente a url acessada
     const id = yield select(selectAppBookId());
@@ -82,27 +86,28 @@ function* loadBook() {
         const result = yield call(request, requestURL);
 
         // caso chamada tenha retornado e sem erro, usa o 'put' para salvar na store os dados recebidos
-        yield put(setStatusSuccessBookAction(result));
+        yield put(setBookStatusSuccessAction(result));
     } catch (err) {
         const error = {
             title: 'Erro desconhecido',
             mensagem: 'Ocorreu um erro ao tentar obter o livro desejado',
         };
-        yield put(setStatusFailBookAction(error));
+        yield put(setBookStatusErrorAction(error));
     }
 }
 
+
 export function* iniciaWatcher() {
     // escuta por requests feitas para a página de procura
-    yield fork(takeLatest, REQUEST_LOAD_SEARCH, loadBooksSearch);
-    yield fork(takeLatest, CHANGE_ACTIVE_PAGE_SEARCH, loadBooksSearch);
+    yield fork(takeLatest, REQUEST_SEARCH_LOAD, loadBooksSearch);
+    yield fork(takeLatest, CHANGE_SEARCH_ACTIVE_PAGE, loadBooksSearch);
 
     // escuta por requests feitas para a página de favoritos
-    yield fork(takeLatest, REQUEST_LOAD_FAVORITE, loadBooksFavorites);
-    yield fork(takeLatest, CHANGE_ACTIVE_PAGE_FAVORITE, loadBooksFavorites);
+    yield fork(takeLatest, REQUEST_FAVORITE_LOAD, loadBooksFavorites);
+    yield fork(takeLatest, CHANGE_FAVORITE_ACTIVE_PAGE, loadBooksFavorites);
 
     // escuta por requests feitas para a página do conteúdo do livro
-    yield fork(takeLatest, REQUEST_LOAD_BOOK, loadBook);
+    yield fork(takeLatest, REQUEST_BOOK_LOAD, loadBook);
 }
 
 export function* sharedSaga() {

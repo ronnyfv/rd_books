@@ -8,12 +8,11 @@ import {
     selectAppSearchIsLoading,
     selectAppSearchQuery,
     selectAppSearchQueryResult,
-} from '../shared/selectors';
-
+} from './selectors';
 import {
-    requestLoadSearchAction,
-    changeActivePageSearchAction,
-} from '../shared/actions';
+    requestSearchLoadAction,
+    changeSearchActivePageAction,
+} from './actions';
 
 import List from '../../components/List';
 import BookBox from '../../components/BookBox';
@@ -99,11 +98,11 @@ SearchContainer.propTypes = {
 export function mapDispatchToProps(dispatch) {
     return {
         loadBooks: () => {
-            dispatch(requestLoadSearchAction());
+            dispatch(requestSearchLoadAction());
         },
         handlePageChange: (evt) => {
             if (typeof evt.selected !== "undefined") {
-                dispatch(changeActivePageSearchAction(evt.selected));
+                dispatch(changeSearchActivePageAction(evt.selected));
             }
         },
     };

@@ -4,8 +4,9 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import { SearchContainer, mapDispatchToProps } from '../index';
-import { changeActivePageSearchAction, requestLoadSearchAction } from '../../shared/actions';
 import configureStore from '../../../store';
+
+import { changeSearchActivePageAction, requestSearchLoadAction } from '../actions';
 
 describe('<SearchContainer />', () => {
     let store;
@@ -44,7 +45,7 @@ describe('<SearchContainer />', () => {
                 expect(result.handlePageChange).toBeDefined();
             });
 
-            it('deve invocar changeActivePageSearchAction quando chamado', () => {
+            it('deve invocar changeSearchActivePageAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const page = 1;
@@ -53,7 +54,7 @@ describe('<SearchContainer />', () => {
                     selected: page,
                 });
 
-                expect(dispatch).toHaveBeenCalledWith(changeActivePageSearchAction(page));
+                expect(dispatch).toHaveBeenCalledWith(changeSearchActivePageAction(page));
             });
         });
 
@@ -65,14 +66,14 @@ describe('<SearchContainer />', () => {
                 expect(result.loadBooks).toBeDefined();
             });
 
-            it('deve invocar requestLoadSearchAction quando chamado', () => {
+            it('deve invocar requestSearchLoadAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const page = 1;
 
                 result.loadBooks();
 
-                expect(dispatch).toHaveBeenCalledWith(requestLoadSearchAction(page));
+                expect(dispatch).toHaveBeenCalledWith(requestSearchLoadAction(page));
             });
         });
     });

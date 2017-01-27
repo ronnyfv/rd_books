@@ -1,0 +1,5 @@
+export const REQUEST_BOOK_LOAD = 'rd_books/REQUEST_BOOK_LOAD';
+
+export const SET_BOOK_STATUS_ERROR = 'rd_books/SET_BOOK_STATUS_ERROR';
+export const SET_BOOK_STATUS_SUCCESS = 'rd_books/SET_BOOK_STATUS_SUCCESS';
+export const SET_BOOK_STATUS_LOADING = 'rd_books/SET_BOOK_STATUS_LOADING';

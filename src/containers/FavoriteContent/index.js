@@ -8,12 +8,11 @@ import {
     selectAppFavoriteIsLoading,
     selectAppFavoriteQuery,
     selectAppFavoriteQueryResult,
-} from '../shared/selectors';
-
+} from './selectors';
 import {
-    requestLoadFavoriteAction,
-    changeActivePageFavoriteAction,
-} from '../shared/actions';
+    requestFavoriteLoadAction,
+    changeFavoriteActivePageAction,
+} from './actions';
 
 import List from '../../components/List';
 import BookBox from '../../components/BookBox';
@@ -100,11 +99,11 @@ export function mapDispatchToProps(dispatch) {
     return {
         loadFavoriteBooks: () => {
             // muda o status do loading: loading = true, finished: false, error: false
-            dispatch(requestLoadFavoriteAction());
+            dispatch(requestFavoriteLoadAction());
         },
         handlePageChange: (evt) => {
             if (typeof evt.selected !== "undefined") {
-                dispatch(changeActivePageFavoriteAction(evt.selected));
+                dispatch(changeFavoriteActivePageAction(evt.selected));
             }
         },
     };
