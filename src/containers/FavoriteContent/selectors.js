@@ -37,6 +37,6 @@ export {
     selectAppFavoriteError,
     selectAppFavoriteIsFinished,
     selectAppFavoriteIsLoading,
-    selectAppFavoriteQuery,
     selectAppFavoriteQueryResult,
+    selectAppFavoriteQuery,
 };

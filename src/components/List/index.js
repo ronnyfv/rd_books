@@ -1,30 +1,43 @@
 import React, { PropTypes } from 'react';
 import ReactPaginate from 'react-paginate';
+import _ from 'lodash';
+
+function checkFavorite(databaseIds, item) {
+    return _.indexOf(databaseIds, item.id) >= 0;
+    // return _.findIndex(databaseIds, item.id) >= 0;
+}
 
 function List(props) {
-    const { Item, queryResult, query, handlePageChange, customMessage, isFinished, isLoading, error } = props;
+    const { Item, queryResult, query, handlePageChange, customMessage, isFinished, isLoading, error, handleAddFavorite, databaseIds } = props;
     const { activePage, resultCount, total } = query;
+
 
     // calcula alguns contadores usados para exibir informações na página e pelo ReactPaginate
     const countResults = activePage * resultCount;
     const countResultsMax = total;
     const pageCount = Math.floor(total / resultCount);
 
+
     // criar variaveis para guardar os componentes da página
     let content = null;
     let info = null;
+
 
     // caso loading true, mostra mensagem recebida pelo component pai
     if (isLoading) {
         content = customMessage;
 
+
         // caso tenha finalizado e error não seja nulo, mostra mensagem recebida pelo component pai
     } else if (isFinished && error) {
         content = customMessage;
 
+
         // caso tenha finalizado e error seja nulo, preenche lista, mensagem
     } else if (isFinished && !error) {
-        content = queryResult.map((item, index) => (<Item index={index} item={item} key={item.id} />));
+        content = queryResult.map((item, index) => (
+            <Item index={index} item={item} key={item.id} handleAddFavorite={handleAddFavorite} isFavorite={checkFavorite(databaseIds, item)} />
+        ));
         info = (
             <span>
                 Mostrando {countResults + 1} a {countResults + resultCount } de {countResultsMax} resultados.
@@ -73,6 +86,8 @@ List.propTypes = {
     isFinished: PropTypes.bool,
     isLoading: PropTypes.bool,
     error: PropTypes.object,
+    handleAddFavorite: PropTypes.func,
+    databaseIds: PropTypes.array,
 };
 
 export default List;

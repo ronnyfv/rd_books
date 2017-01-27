@@ -9,25 +9,22 @@ import {
     selectAppSearchQuery,
     selectAppSearchQueryResult,
 } from './selectors';
+
 import {
-    requestSearchLoadAction,
     changeSearchActivePageAction,
+    addNewBookFavoriteAction,
+    removeNewBookFavoriteAction,
 } from './actions';
+
+import { selectAppDatabaseIds } from '../shared/selectors';
+
 
 import List from '../../components/List';
 import BookBox from '../../components/BookBox';
 
 export class SearchContainer extends React.Component {
-    componentWillMount() {
-        /**
-         * loadBooks faz o request para carregar a lista de livros
-         * chamado durante o mount do container
-         */
-        this.props.loadBooks(this.props.query);
-    }
-
     render() {
-        const { error, isFinished, isLoading, query, queryResult, handlePageChange } = this.props;
+        const { error, isFinished, isLoading, query, queryResult, handlePageChange, handleAddFavorite, databaseIds } = this.props;
 
         /**
          * O component List pode receber um elemento que será mostrando em caso de loading ou erro.
@@ -35,6 +32,7 @@ export class SearchContainer extends React.Component {
          * Em caso de sucesso, mensagem nula é enviada.
          */
         let customMessage = null;
+        let showPaginator = true;
 
         // em caso de loading, mostra mensagem de carregando
         if (isLoading) {
@@ -51,6 +49,10 @@ export class SearchContainer extends React.Component {
                     <strong>Desculpe!</strong> Ocorreu um erro ao tentar obter os livros
                 </div>
             );
+
+            // caso não esteja carregando, não tenha finalizado e não exista erro, significa que a nada esta sendo feito, então não mostra a paginação
+        } else if (!isLoading && !isFinished && !error) {
+            showPaginator = false;
         }
 
         return (
@@ -62,16 +64,22 @@ export class SearchContainer extends React.Component {
                     </div>
 
                     <div className="row">
-                        <List
-                            queryResult={queryResult}
-                            query={query}
-                            handlePageChange={handlePageChange}
-                            isFinished={isFinished}
-                            isLoading={isLoading}
-                            error={error}
-                            Item={BookBox}
-                            customMessage={customMessage}
-                        />
+                        {!showPaginator ? null :
+                            (
+                                <List
+                                    queryResult={queryResult}
+                                    query={query}
+                                    handlePageChange={handlePageChange}
+                                    isFinished={isFinished}
+                                    isLoading={isLoading}
+                                    error={error}
+                                    Item={BookBox}
+                                    databaseIds={databaseIds}
+                                    customMessage={customMessage}
+                                    handleAddFavorite={handleAddFavorite}
+                                />
+                            )
+                        }
                     </div>
                 </div>
             </main>
@@ -88,8 +96,9 @@ SearchContainer.propTypes = {
         PropTypes.array,
         PropTypes.object,
     ]),
-    loadBooks: PropTypes.func.isRequired,
     handlePageChange: PropTypes.func.isRequired,
+    handleAddFavorite: PropTypes.func.isRequired,
+    databaseIds: PropTypes.array,
 };
 
 /**
@@ -97,12 +106,16 @@ SearchContainer.propTypes = {
  */
 export function mapDispatchToProps(dispatch) {
     return {
-        loadBooks: () => {
-            dispatch(requestSearchLoadAction());
-        },
         handlePageChange: (evt) => {
             if (typeof evt.selected !== "undefined") {
                 dispatch(changeSearchActivePageAction(evt.selected));
+            }
+        },
+        handleAddFavorite: (item, status) => {
+            if (status) {
+                dispatch(removeNewBookFavoriteAction(item));
+            } else {
+                dispatch(addNewBookFavoriteAction(item));
             }
         },
     };
@@ -118,6 +131,7 @@ const mapStateToProps = createStructuredSelector({
     isLoading: selectAppSearchIsLoading(),
     query: selectAppSearchQuery(),
     queryResult: selectAppSearchQueryResult(),
+    databaseIds: selectAppDatabaseIds(),
 });
 
 /**

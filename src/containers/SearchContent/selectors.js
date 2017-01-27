@@ -31,6 +31,10 @@ const selectAppSearchQueryResult = () => createSelector(
     (appState) => appState.search.queryResult,
 );
 
+const selectAppBookToAdd = () => createSelector(
+    selectApp,
+    (appState) => appState.bookToAdd,
+);
 
 export {
     selectApp,
@@ -39,4 +43,5 @@ export {
     selectAppSearchIsLoading,
     selectAppSearchQuery,
     selectAppSearchQueryResult,
+    selectAppBookToAdd,
 };

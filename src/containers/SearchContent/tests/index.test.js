@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import { SearchContainer, mapDispatchToProps } from '../index';
 import configureStore from '../../../store';
 
-import { changeSearchActivePageAction, requestSearchLoadAction } from '../actions';
+import { changeSearchActivePageAction, addNewBookFavoriteAction } from '../actions';
 
 describe('<SearchContainer />', () => {
     let store;
@@ -19,7 +19,7 @@ describe('<SearchContainer />', () => {
         queryResult: [],
         handlePageChange: () => {
         },
-        loadBooks: () => {
+        handleAddFavorite: () => {
         },
     };
 
@@ -58,22 +58,21 @@ describe('<SearchContainer />', () => {
             });
         });
 
-        describe('loadBooks', () => {
-            it('deve conter loadBooks', () => {
+        describe('handleAddFavorite', () => {
+            it('deve conter handleAddFavorite', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
 
-                expect(result.loadBooks).toBeDefined();
+                expect(result.handleAddFavorite).toBeDefined();
             });
 
             it('deve invocar requestSearchLoadAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
-                const page = 1;
 
-                result.loadBooks();
+                result.handleAddFavorite({}, false);
 
-                expect(dispatch).toHaveBeenCalledWith(requestSearchLoadAction(page));
+                expect(dispatch).toHaveBeenCalledWith(addNewBookFavoriteAction({}));
             });
         });
     });

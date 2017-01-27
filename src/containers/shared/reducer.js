@@ -4,12 +4,20 @@ import {
     TOGGLE_SIDEBAR,
     SHOW_SIDEBAR,
     HIDE_SIDEBAR,
+    LOAD_DATABASE,
 } from './constants';
+
 
 /**
  * FAVORITES
  */
-import {} from '../FavoriteContent/constants';
+import {
+    SET_FAVORITE_STATUS_SUCCESS,
+    SET_FAVORITE_STATUS_LOADING,
+    SET_FAVORITE_STATUS_ERROR,
+    CHANGE_FAVORITE_ACTIVE_PAGE,
+} from '../FavoriteContent/constants';
+
 
 /**
  * SEARCH IMPORTS
@@ -19,7 +27,11 @@ import {
     SET_SEARCH_STATUS_LOADING,
     SET_SEARCH_STATUS_ERROR,
     SET_SEARCH_STATUS_SUCCESS,
+    ADD_NEW_BOOK_FAVORITE,
+    REMOVE_NEW_BOOK_FAVORITE,
+    REQUEST_SEARCH_LOAD,
 } from '../SearchContent/constants';
+
 
 /**
  * BOOK IMPORTS
@@ -43,7 +55,7 @@ const initialState = {
         isFinished: false,
         isLoading: false,
         query: {
-            queryString: 'javascript',
+            queryString: undefined,
             activePage: 0,
             resultCount: 5,
             total: 0,
@@ -51,16 +63,19 @@ const initialState = {
         },
         queryResult: undefined,
     },
+    database: {
+        books: [],
+        ids: [],
+    },
     favorite: {
+        bookToAdd: undefined,
         error: undefined,
         isFinished: false,
         isLoading: false,
         query: {
-            queryString: 'javascript',
             activePage: 0,
             resultCount: 5,
             total: 0,
-            orderBy: 'relevance',
         },
         queryResult: undefined,
     },
@@ -101,6 +116,11 @@ function appReducer(state = initialState, action) {
                 },
             });
 
+        case LOAD_DATABASE:
+            return _.merge({}, state, {
+                database: action.database,
+            });
+
         /**
          * SEARCH
          */
@@ -109,6 +129,15 @@ function appReducer(state = initialState, action) {
                 search: {
                     query: {
                         activePage: action.activePage,
+                    },
+                },
+            });
+
+        case REQUEST_SEARCH_LOAD:
+            return _.merge({}, state, {
+                search: {
+                    query: {
+                        queryString: action.queryString,
                     },
                 },
             });
@@ -142,6 +171,16 @@ function appReducer(state = initialState, action) {
                     isFinished: true,
                     isLoading: false,
                 },
+            });
+
+        case ADD_NEW_BOOK_FAVORITE:
+            return _.merge({}, state, {
+                bookToAdd: action.book,
+            });
+
+        case REMOVE_NEW_BOOK_FAVORITE:
+            return _.merge({}, state, {
+                bookToAdd: action.book,
             });
 
         /**
@@ -183,6 +222,52 @@ function appReducer(state = initialState, action) {
                     data: undefined,
                 },
             });
+
+
+        /**
+         * FAVORITE
+         */
+
+        case CHANGE_FAVORITE_ACTIVE_PAGE:
+            return _.merge({}, state, {
+                favorite: {
+                    query: {
+                        activePage: action.activePage,
+                    },
+                },
+            });
+
+        case SET_FAVORITE_STATUS_LOADING:
+            return _.merge({}, state, {
+                favorite: {
+                    error: undefined,
+                    isFinished: false,
+                    isLoading: true,
+                },
+            });
+
+        case SET_FAVORITE_STATUS_SUCCESS:
+            return _.merge({}, state, {
+                favorite: {
+                    error: undefined,
+                    isFinished: true,
+                    isLoading: false,
+                    query: {
+                        total: action.totalItems,
+                    },
+                    queryResult: action.items,
+                },
+            });
+
+        case SET_FAVORITE_STATUS_ERROR:
+            return _.merge({}, state, {
+                favorite: {
+                    error: action.error,
+                    isFinished: true,
+                    isLoading: false,
+                },
+            });
+
 
         default:
             return state;

@@ -22,7 +22,7 @@ describe('appReducer', () => {
                 isFinished: false,
                 isLoading: false,
                 query: {
-                    queryString: 'javascript',
+                    queryString: undefined,
                     activePage: 0,
                     resultCount: 5,
                     total: 0,
@@ -30,16 +30,19 @@ describe('appReducer', () => {
                 },
                 queryResult: undefined,
             },
+            database: {
+                books: [],
+                ids: [],
+            },
             favorite: {
+                bookToAdd: undefined,
                 error: undefined,
                 isFinished: false,
                 isLoading: false,
                 query: {
-                    queryString: 'javascript',
                     activePage: 0,
                     resultCount: 5,
                     total: 0,
-                    orderBy: 'relevance',
                 },
                 queryResult: undefined,
             },

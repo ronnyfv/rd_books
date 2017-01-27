@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Link } from 'react-router';
 
 function BookBox(props) {
-    const { item } = props;
+    const { item, handleAddFavorite, isFavorite } = props;
 
     const { id, title, publishedDate } = item;
     const thumb = item.imageLinks ? item.imageLinks.thumbnail : null;
@@ -26,11 +26,21 @@ function BookBox(props) {
                     {description}
                 </div>
                 <div className="stats-and-actions">
-                    <div className="pull-right m-t-5">
-                        <button className="btn btn-ghost btn-blue">
-                            <i className="fa fa-star-o m-r-5" /> favoritar
-                        </button>
-                    </div>
+                    {!handleAddFavorite ? null :
+                        (<div className="pull-right m-t-5">
+                            {isFavorite ?
+                                (
+                                    <button className="btn btn-ghost btn-blue" onClick={() => (handleAddFavorite(item, isFavorite))}>
+                                        <i className="fa fa-star m-r-5" /> remover
+                                    </button>
+                                ) : (
+                                    <button className="btn btn-ghost btn-blue" onClick={() => (handleAddFavorite(item, isFavorite))}>
+                                        <i className="fa fa-star-o m-r-5" /> adicionar
+                                    </button>
+                                )
+                            }
+                        </div>)
+                    }
                 </div>
             </div>
         </div>
@@ -39,6 +49,8 @@ function BookBox(props) {
 
 BookBox.propTypes = {
     item: PropTypes.object.isRequired,
+    handleAddFavorite: PropTypes.func,
+    isFavorite: PropTypes.bool,
 };
 
 export default BookBox;

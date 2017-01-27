@@ -2,7 +2,7 @@ import { takeLatest, put, select, fork, call } from 'redux-saga/effects';
 import _ from 'lodash';
 
 import request from '../../helpers/request';
-import formatBookListVolume from '../../helpers/book';
+import formatBookListVolume, { loadDatabaseLocalStorage, saveDatabaseLocalStorage } from '../../helpers/book';
 
 /**
  *  BOOK IMPORTS
@@ -14,17 +14,59 @@ import { selectAppBookId } from '../BookContainer/selectors';
 /**
  * FAVORITE IMPORTS
  */
-import { REQUEST_FAVORITE_LOAD, CHANGE_FAVORITE_ACTIVE_PAGE } from '../FavoriteContent/constants';
-import { setFavoriteStatusLoadingAction } from '../FavoriteContent/actions';
-import { selectAppFavoriteQuery } from '../FavoriteContent/selectors';
+import {
+    REQUEST_FAVORITE_LOAD,
+    CHANGE_FAVORITE_ACTIVE_PAGE,
+} from '../FavoriteContent/constants';
+import { setFavoriteStatusLoadingAction, setFavoriteStatusSuccessAction, setFavoriteStatusErrorAction } from '../FavoriteContent/actions';
 
 /**
  * SEARCH IMPORTS
  */
-import { REQUEST_SEARCH_LOAD, CHANGE_SEARCH_ACTIVE_PAGE } from '../SearchContent/constants';
+import {
+    REQUEST_SEARCH_LOAD,
+    CHANGE_SEARCH_ACTIVE_PAGE,
+    ADD_NEW_BOOK_FAVORITE,
+    REMOVE_NEW_BOOK_FAVORITE,
+} from '../SearchContent/constants';
 import { setSearchStatusLoadingAction, setSearchStatusErrorAction, setSearchStatusSuccessAction } from '../SearchContent/actions';
-import { selectAppSearchQuery } from '../SearchContent/selectors';
+import { selectAppSearchQuery, selectAppBookToAdd } from '../SearchContent/selectors';
 
+
+/**
+ * APP
+ */
+import { INIT_DATABASE, SAVE_DATABASE } from './constants';
+import { loadDatabaseAction } from './actions';
+import { selectAppDatabase } from './selectors';
+
+function* addNewBookFavorite() {
+    const bookToAdd = yield select(selectAppBookToAdd());
+    const database = loadDatabaseLocalStorage();
+
+    if (_.findIndex(database.books, { id: bookToAdd.id }) < 0) {
+        database.ids.push(bookToAdd.id);
+        database.books.push(bookToAdd);
+
+        saveDatabaseLocalStorage(database);
+        yield put(loadDatabaseAction(database));
+    }
+}
+
+function* removeNewBookFavorite() {
+    const bookToAdd = yield select(selectAppBookToAdd());
+    const database = loadDatabaseLocalStorage();
+
+    if (_.findIndex(database.books, { id: bookToAdd.id }) >= 0) {
+        database.ids = _.without(database.ids, bookToAdd.id);
+        database.books = _.remove(database.books, {
+            id: bookToAdd.id,
+        });
+
+        saveDatabaseLocalStorage(database);
+        yield put(loadDatabaseAction(database));
+    }
+}
 
 function* loadBooksSearch() {
     // muda o status do loading: loading = true, finished: false, error: false
@@ -65,8 +107,16 @@ function* loadBooksFavorites() {
     // muda o status do loading: loading = true, finished: false, error: false
     yield put(setFavoriteStatusLoadingAction());
 
-    // usando reselect, obtem atributo 'id' referente a url acessada
-    const id = yield select(selectAppFavoriteQuery());
+    try {
+        const database = yield select(selectAppDatabase());
+        yield put(setFavoriteStatusSuccessAction(database.books, database.books.length));
+    } catch (err) {
+        const error = {
+            title: 'Erro desconhecido',
+            mensagem: 'Ocorreu um erro ao tentar obter a lista de livros',
+        };
+        yield put(setFavoriteStatusErrorAction(error));
+    }
 }
 
 
@@ -97,10 +147,29 @@ function* loadBook() {
 }
 
 
+function* initDatabase() {
+    const database = loadDatabaseLocalStorage();
+    yield put(loadDatabaseAction(database));
+}
+
+function* saveDatabase() {
+    const database = yield select(selectAppDatabase());
+    saveDatabaseLocalStorage(database);
+}
+
+/**
+ * Saga fica constantemente escutando por qualquer chamada que usa as actions.
+ * Caso encontre, ele chama o método especificado no terceiro parâmetro
+ */
 export function* iniciaWatcher() {
+    yield fork(takeLatest, INIT_DATABASE, initDatabase);
+    yield fork(takeLatest, SAVE_DATABASE, saveDatabase);
+
     // escuta por requests feitas para a página de procura
     yield fork(takeLatest, REQUEST_SEARCH_LOAD, loadBooksSearch);
     yield fork(takeLatest, CHANGE_SEARCH_ACTIVE_PAGE, loadBooksSearch);
+    yield fork(takeLatest, ADD_NEW_BOOK_FAVORITE, addNewBookFavorite);
+    yield fork(takeLatest, REMOVE_NEW_BOOK_FAVORITE, removeNewBookFavorite);
 
     // escuta por requests feitas para a página de favoritos
     yield fork(takeLatest, REQUEST_FAVORITE_LOAD, loadBooksFavorites);

@@ -18,3 +18,27 @@ export default function formatBookListVolume(items) {
         ...item.volumeInfo,
     }));
 }
+
+export function saveDatabaseLocalStorage(database) {
+    localStorage.clear();
+
+    localStorage.setItem('ids', JSON.stringify(database.ids));
+    localStorage.setItem('books', JSON.stringify(database.books));
+}
+
+export function loadDatabaseLocalStorage() {
+    const database = {
+        books: [],
+        ids: [],
+    };
+
+    if (localStorage.getItem('books')) {
+        database.books = JSON.parse(localStorage.getItem('books'));
+    }
+
+    if (localStorage.getItem('ids')) {
+        database.ids = JSON.parse(localStorage.getItem('ids'));
+    }
+
+    return database;
+}

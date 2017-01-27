@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import configureStore from '../../../store';
-import { toggleSidebarAction } from '../../shared/actions';
+import { toggleSidebarAction, initDatabaseAction } from '../../shared/actions';
 
 import { AppContainer, mapDispatchToProps } from '../index';
 import Sidebar from '../../../components/Sidebar';
@@ -12,8 +12,20 @@ import Sidebar from '../../../components/Sidebar';
 describe('<AppContainer />', () => {
     let store;
 
-    const handleMobileButton = () => {
-
+    const props = {
+        showSidebar: false,
+        handleMobileButton: () => {
+        },
+        handleInitDatabase: () => {
+        },
+        location: {
+            pathname: '',
+        },
+        loadBooks: () => {
+        },
+        showForm: true,
+        handleAddFavorite: () => {
+        },
     };
 
     beforeAll(() => {
@@ -24,7 +36,7 @@ describe('<AppContainer />', () => {
         const children = (<h1>AppContainer</h1>);
         const renderedComponent = mount(
             <Provider store={store}>
-                <AppContainer showSidebar={false} handleMobileButton={handleMobileButton}>
+                <AppContainer {...props}>
                     {children}
                 </AppContainer>
             </Provider>
@@ -33,14 +45,7 @@ describe('<AppContainer />', () => {
         expect(renderedComponent.contains(children)).toEqual(true);
     });
 
-    it('deve renderizar a sidebar', () => {
-        const renderedComponent = mount(
-            <Provider store={store}>
-                <AppContainer showSidebar={false} handleMobileButton={handleMobileButton} />
-            </Provider>
-        );
-        expect(renderedComponent.contains(<Sidebar showSidebar={false} />)).toEqual(true);
-    });
+
 
     describe('mapDispatchToProps', () => {
         describe('handleMobileButton', () => {
@@ -58,6 +63,33 @@ describe('<AppContainer />', () => {
                 result.handleMobileButton();
 
                 expect(dispatch).toHaveBeenCalledWith(toggleSidebarAction());
+            });
+        });
+
+        describe('handleInitDatabase', () => {
+            it('deve conter handleInitDatabase', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                expect(result.handleInitDatabase).toBeDefined();
+            });
+
+            it('deve invocar initDatabaseAction quando chamado', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                result.handleInitDatabase();
+
+                expect(dispatch).toHaveBeenCalledWith(initDatabaseAction());
+            });
+        });
+
+        describe('loadBooks', () => {
+            it('deve conter loadBooks', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                expect(result.loadBooks).toBeDefined();
             });
         });
     });

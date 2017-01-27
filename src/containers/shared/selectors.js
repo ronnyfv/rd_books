@@ -8,6 +8,16 @@ const selectAppShowSidebar = () => createSelector(
     (appState) => appState.ui.showSidebar
 );
 
+const selectAppDatabase = () => createSelector(
+    selectApp,
+    (appState) => appState.database,
+);
+
+const selectAppDatabaseIds = () => createSelector(
+    selectApp,
+    (appState) => appState.database.ids,
+);
+
 const selectLocationState = () => {
     let prevRoutingState;
 
@@ -27,4 +37,6 @@ export {
     selectApp,
     selectLocationState,
     selectAppShowSidebar,
+    selectAppDatabase,
+    selectAppDatabaseIds,
 };

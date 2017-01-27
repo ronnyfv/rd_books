@@ -57,7 +57,7 @@ export class FavoriteContainer extends React.Component {
             <main>
                 <div className="content">
                     <div className="row">
-                        <h3 className="text-uppercase">Resultados dos seus favoritos</h3>
+                        <h3 className="text-uppercase">Meus favoritos</h3>
                         <div className="border-blue m-b-20"></div>
                     </div>
 

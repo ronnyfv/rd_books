@@ -2,7 +2,32 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 function Sidebar(props) {
-    const { showSidebar } = props;
+    const { showSidebar, showForm, loadBooks } = props;
+
+    let form = null;
+
+    if (showForm) {
+        form = (
+            <div className="row">
+                <div className="search-form">
+                    <h4 className="text-uppercase">Procurar livros</h4>
+                    <div className="border-blue m-b-20"></div>
+                    <form role="form" className="form" onSubmit={loadBooks}>
+                        <div className="form-group">
+                            <input type="text" name="query" className="form-control" placeholder="palavra-chave" />
+                        </div>
+
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-small btn-green pull-right">
+                                <i className="fa fa-search m-r-5" />
+                                procurar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <nav className={showSidebar ? 'open' : null}>
@@ -25,24 +50,7 @@ function Sidebar(props) {
                     </ul>
                 </div>
 
-                <div className="row">
-                    <div className="search-form">
-                        <h4 className="text-uppercase">Procurar todos</h4>
-                        <div className="border-blue m-b-20"></div>
-                        <form role="form" className="form">
-                            <div className="form-group">
-                                <input type="text" name="" className="form-control" placeholder="palavra-chave" />
-                            </div>
-
-                            <div className="form-group">
-                                <button type="submit" className="btn btn-small btn-green pull-right">
-                                    <i className="fa fa-search m-r-5" />
-                                    procurar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                {form}
             </div>
         </nav>
     );
@@ -50,6 +58,8 @@ function Sidebar(props) {
 
 Sidebar.propTypes = {
     showSidebar: PropTypes.bool.isRequired,
+    showForm: PropTypes.bool.isRequired,
+    loadBooks: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

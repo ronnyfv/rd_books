@@ -14,6 +14,7 @@ const vendor = [
     'react-redux',
     'react-router',
     'react-router-redux',
+    'redux-saga',
     'reselect',
 ];
 

@@ -33,7 +33,7 @@ describe('<FavoriteContainer />', () => {
                 <FavoriteContainer {...props} />
             </Provider>
         );
-        expect(renderedComponent.contains(<h3 className="text-uppercase">Resultados dos seus favoritos</h3>)).toEqual(true);
+        expect(renderedComponent.contains(<h3 className="text-uppercase">Meus favoritos</h3>)).toEqual(true);
     });
 
     describe('mapDispatchToProps', () => {

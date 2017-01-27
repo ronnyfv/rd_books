@@ -4,6 +4,8 @@ import {
     SET_SEARCH_STATUS_LOADING,
     SET_SEARCH_STATUS_ERROR,
     SET_SEARCH_STATUS_SUCCESS,
+    ADD_NEW_BOOK_FAVORITE,
+    REMOVE_NEW_BOOK_FAVORITE,
 } from './constants';
 
 export function changeSearchActivePageAction(activePage) {
@@ -34,8 +36,23 @@ export function setSearchStatusErrorAction(error) {
     };
 }
 
-export function requestSearchLoadAction() {
+export function requestSearchLoadAction(queryString) {
     return {
         type: REQUEST_SEARCH_LOAD,
+        queryString,
+    };
+}
+
+export function addNewBookFavoriteAction(book) {
+    return {
+        type: ADD_NEW_BOOK_FAVORITE,
+        book,
+    };
+}
+
+export function removeNewBookFavoriteAction(book) {
+    return {
+        type: REMOVE_NEW_BOOK_FAVORITE,
+        book,
     };
 }
