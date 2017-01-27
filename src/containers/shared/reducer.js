@@ -12,6 +12,11 @@ import {
     SET_STATUS_SEARCH_LOADING,
     SET_STATUS_SEARCH_SUCCESS,
     SET_STATUS_SEARCH_ERROR,
+
+    // livro
+    REQUEST_LOAD_BOOK,
+    SET_STATUS_BOOK_SUCCESS,
+    SET_STATUS_BOOK_ERROR,
 } from './constants';
 
 /* eslint-disable quote-props, comma-dangle */
@@ -49,9 +54,11 @@ const initialState = {
         queryResult: undefined,
     },
     book: {
-        isError: false,
+        error: undefined,
         isFinished: false,
         isLoading: false,
+        id: undefined,
+        data: undefined,
     },
 };
 
@@ -125,6 +132,33 @@ function appReducer(state = initialState, action) {
                     error: action.error,
                     isFinished: true,
                     isLoading: false,
+                }
+            });
+
+        case REQUEST_LOAD_BOOK:
+            return _.merge({}, state, {
+                book: {
+                    id: action.bookId,
+                }
+            });
+
+        case SET_STATUS_BOOK_SUCCESS:
+            return _.merge({}, state, {
+                book: {
+                    error: undefined,
+                    isFinished: true,
+                    isLoading: false,
+                    data: action.data,
+                }
+            });
+
+        case SET_STATUS_BOOK_ERROR:
+            return _.merge({}, state, {
+                book: {
+                    error: action.error,
+                    isFinished: true,
+                    isLoading: false,
+                    data: undefined,
                 }
             });
 

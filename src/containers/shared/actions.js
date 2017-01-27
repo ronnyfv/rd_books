@@ -9,11 +9,15 @@ import {
     SET_STATUS_SEARCH_LOADING,
     SET_STATUS_SEARCH_ERROR,
     SET_STATUS_SEARCH_SUCCESS,
+    REQUEST_LOAD_BOOK,
+    SET_STATUS_BOOK_ERROR,
+    SET_STATUS_BOOK_SUCCESS,
 } from './constants';
 
 const Modulos = {
     SEARCH: 'search',
     FAVORITE: 'favorite',
+    BOOK: 'book',
 };
 
 export function hideSidebarAction() {
@@ -94,7 +98,7 @@ export function setStatusLoadingFavoriteAction() {
 
 export function setStatusSuccessFavoriteAction(items, totalItems) {
     return {
-        type: SET_STATUS_SEARCH_LOADING,
+        type: SET_STATUS_SEARCH_SUCCESS,
         target: Modulos.FAVORITE,
         items,
         totalItems,
@@ -103,7 +107,7 @@ export function setStatusSuccessFavoriteAction(items, totalItems) {
 
 export function setStatusFailFavoriteAction(error) {
     return {
-        type: SET_STATUS_SEARCH_LOADING,
+        type: SET_STATUS_SEARCH_ERROR,
         target: Modulos.FAVORITE,
         error,
     };
@@ -112,5 +116,37 @@ export function setStatusFailFavoriteAction(error) {
 export function requestLoadFavoriteAction() {
     return {
         type: REQUEST_LOAD_FAVORITE,
+    };
+}
+
+/**
+ *  LIVRO
+ */
+
+export function requestLoadBookAction(bookId) {
+    return {
+        type: REQUEST_LOAD_BOOK,
+        bookId,
+    };
+}
+
+export function setStatusLoadingBookAction() {
+    return {
+        type: SET_STATUS_SEARCH_LOADING,
+        target: Modulos.BOOK,
+    };
+}
+
+export function setStatusSuccessBookAction(data) {
+    return {
+        type: SET_STATUS_BOOK_SUCCESS,
+        data,
+    };
+}
+
+export function setStatusFailBookAction(error) {
+    return {
+        type: SET_STATUS_BOOK_ERROR,
+        error,
     };
 }

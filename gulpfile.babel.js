@@ -39,6 +39,8 @@ function devServer() {
 
         hot: true,
 
+        historyApiFallback: true,
+
         stats: {
             colors: true,
             exclude: ['node_modules'],

@@ -46,9 +46,11 @@ describe('appReducer', () => {
                 queryResult: undefined,
             },
             book: {
-                isError: false,
+                error: undefined,
                 isFinished: false,
                 isLoading: false,
+                id: undefined,
+                data: undefined,
             },
         };
     });

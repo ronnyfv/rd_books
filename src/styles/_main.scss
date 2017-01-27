@@ -51,6 +51,21 @@ main {
     font-size: 90%;
     text-align: center;
   }
+
+  .book-content {
+    > .description {
+      font-size: 80%;
+    }
+
+    > .stats {
+      font-size: 80%;
+    }
+
+    > .prices {
+      font-size: 80%;
+    }
+
+  }
 }
 
 @media only screen and (min-width: 650px) {

@@ -19,7 +19,7 @@ function routeReducer(state = routeInitialState, action) {
     switch (action.type) {
 
         case LOCATION_CHANGE:
-            return _.merge(state, {
+            return _.merge({}, state, {
                 locationBeforeTransitions: action.payload,
             });
 

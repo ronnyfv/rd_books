@@ -10,6 +10,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 /**
  * css reset
@@ -27,8 +28,14 @@ import { routes } from './routes';
 // store da aplicação
 import configureStore from './store';
 
+import { selectLocationState } from './containers/shared/selectors';
+
 const initialState = {};
 const store = configureStore(initialState, browserHistory);
+
+const history = syncHistoryWithStore(browserHistory, store, {
+    selectLocationState: selectLocationState(),
+});
 
 /**
  * render
@@ -36,7 +43,7 @@ const store = configureStore(initialState, browserHistory);
 function init() {
     ReactDOM.render(
         <Provider store={store}>
-            <Router history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
+            <Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
                 {routes()}
             </Router>
         </Provider>,

@@ -82,6 +82,36 @@ const selectAppFavoriteQueryResult = () => createSelector(
     (appState) => appState.favorite.queryResult,
 );
 
+
+/**
+ * BOOK SELECTORS
+ */
+
+const selectAppBookError = () => createSelector(
+    selectApp,
+    (appState) => appState.book.error,
+);
+
+const selectAppBookIsFinished = () => createSelector(
+    selectApp,
+    (appState) => appState.book.isFinished,
+);
+
+const selectAppBookIsLoading = () => createSelector(
+    selectApp,
+    (appState) => appState.book.isLoading,
+);
+
+const selectAppBookId = () => createSelector(
+    selectApp,
+    (appState) => appState.book.id,
+);
+
+const selectAppBookData = () => createSelector(
+    selectApp,
+    (appState) => appState.book.data,
+);
+
 export {
     // APP SELECTORS
     selectApp,
@@ -101,4 +131,11 @@ export {
     selectAppFavoriteIsLoading,
     selectAppFavoriteQuery,
     selectAppFavoriteQueryResult,
+
+    // BOOK SELECTORS
+    selectAppBookError,
+    selectAppBookIsFinished,
+    selectAppBookIsLoading,
+    selectAppBookId,
+    selectAppBookData,
 };
