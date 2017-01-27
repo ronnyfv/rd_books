@@ -1,6 +1,5 @@
 import {
     selectApp,
-    selectAppLoading,
     selectAppShowSidebar,
     selectLocationState,
 } from '../selectors';

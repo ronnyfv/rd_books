@@ -1,13 +1,24 @@
-// importando bibliotecas de terceiros
+/**
+ * babel-polyfill necessário pelo redux-saga
+ */
+import 'babel-polyfill';
+
+/**
+ * bibliotecas de terceiros
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 
-// css reset
+/**
+ * css reset
+ */
 import 'sanitize.css/sanitize.css';
 
-// estilo principal
+/**
+ * estilo principal, main.scss chama todas os outras arquivos de estilo, incluindo fonte e variáveis
+ */
 import './main.scss';
 
 // rotas da aplicação

@@ -27,9 +27,9 @@ const selectLocationState = () => {
  *  SEARCH SELECTORS
  */
 
-const selectAppSearchIsError = () => createSelector(
+const selectAppSearchError = () => createSelector(
     selectApp,
-    (appState) => appState.search.isError,
+    (appState) => appState.search.error,
 );
 
 const selectAppSearchIsFinished = () => createSelector(
@@ -57,9 +57,9 @@ const selectAppSearchQueryResult = () => createSelector(
  *  FAVORITE SELECTORS
  */
 
-const selectAppFavoriteIsError = () => createSelector(
+const selectAppFavoriteError = () => createSelector(
     selectApp,
-    (appState) => appState.favorite.isError,
+    (appState) => appState.favorite.error,
 );
 
 const selectAppFavoriteIsFinished = () => createSelector(
@@ -89,14 +89,14 @@ export {
     selectAppShowSidebar,
 
     // SEARCH SELECTORS
-    selectAppSearchIsError,
+    selectAppSearchError,
     selectAppSearchIsFinished,
     selectAppSearchIsLoading,
     selectAppSearchQuery,
     selectAppSearchQueryResult,
 
     // FAVORITE SELECTORS
-    selectAppFavoriteIsError,
+    selectAppFavoriteError,
     selectAppFavoriteIsFinished,
     selectAppFavoriteIsLoading,
     selectAppFavoriteQuery,

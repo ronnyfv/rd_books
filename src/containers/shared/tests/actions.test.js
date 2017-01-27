@@ -2,14 +2,16 @@ import {
     HIDE_SIDEBAR,
     SHOW_SIDEBAR,
     TOGGLE_SIDEBAR,
-    CHANGE_ACTIVE_PAGE
+    CHANGE_ACTIVE_PAGE_FAVORITE,
+    CHANGE_ACTIVE_PAGE_SEARCH,
 } from '../constants';
 
 import {
     toggleSidebarAction,
     hideSidebarAction,
     showSidebarAction,
-    chageActivePageAction,
+    changeActivePageFavoriteAction,
+    changeActivePageSearchAction,
 } from '../actions';
 
 describe('Actions', () => {
@@ -43,18 +45,29 @@ describe('Actions', () => {
         });
     });
 
-    describe('chageActivePageAction', () => {
+    describe('changeActivePageFavoriteAction', () => {
         it('deve retornar o type referente a action', () => {
             const page = 1;
-            const pageText = 'search';
 
             const expectedResult = {
-                type: CHANGE_ACTIVE_PAGE,
-                target: pageText,
+                type: CHANGE_ACTIVE_PAGE_FAVORITE,
                 activePage: page,
             };
 
-            expect(chageActivePageAction(pageText, page)).toEqual(expectedResult);
+            expect(changeActivePageFavoriteAction(page)).toEqual(expectedResult);
+        });
+    });
+
+    describe('changeActivePageSearchAction', () => {
+        it('deve retornar o type referente a action', () => {
+            const page = 1;
+
+            const expectedResult = {
+                type: CHANGE_ACTIVE_PAGE_SEARCH,
+                activePage: page,
+            };
+
+            expect(changeActivePageSearchAction(page)).toEqual(expectedResult);
         });
     });
 });

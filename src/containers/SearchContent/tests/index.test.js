@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import { SearchContainer, mapDispatchToProps } from '../index';
-import { chageActivePageAction } from '../../shared/actions';
+import { changeActivePageSearchAction, requestLoadSearchAction } from '../../shared/actions';
 import configureStore from '../../../store';
 
 describe('<SearchContainer />', () => {
@@ -17,6 +17,8 @@ describe('<SearchContainer />', () => {
         query: {},
         queryResult: [],
         handlePageChange: () => {
+        },
+        loadBooks: () => {
         },
     };
 
@@ -42,17 +44,35 @@ describe('<SearchContainer />', () => {
                 expect(result.handlePageChange).toBeDefined();
             });
 
-            it('deve invocar chageActivePageAction quando chamado', () => {
+            it('deve invocar changeActivePageSearchAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const page = 1;
-                const pageText = 'search';
 
                 result.handlePageChange({
                     selected: page,
                 });
 
-                expect(dispatch).toHaveBeenCalledWith(chageActivePageAction(pageText, page));
+                expect(dispatch).toHaveBeenCalledWith(changeActivePageSearchAction(page));
+            });
+        });
+
+        describe('loadBooks', () => {
+            it('deve conter loadBooks', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                expect(result.loadBooks).toBeDefined();
+            });
+
+            it('deve invocar requestLoadSearchAction quando chamado', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+                const page = 1;
+
+                result.loadBooks();
+
+                expect(dispatch).toHaveBeenCalledWith(requestLoadSearchAction(page));
             });
         });
     });

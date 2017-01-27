@@ -3,35 +3,54 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import {
-    selectAppSearchIsError,
+    selectAppSearchError,
     selectAppSearchIsFinished,
     selectAppSearchIsLoading,
     selectAppSearchQuery,
     selectAppSearchQueryResult,
 } from '../shared/selectors';
 
-import { chageActivePageAction } from '../shared/actions';
+import {
+    requestLoadSearchAction,
+    changeActivePageSearchAction,
+} from '../shared/actions';
 
 import List from '../../components/List';
 import BookBox from '../../components/BookBox';
 
 export class SearchContainer extends React.Component {
-    render() {
-        const { isError, isFinished, isLoading, query, queryResult, handlePageChange } = this.props;
+    componentWillMount() {
+        /**
+         * loadBooks faz o request para carregar a lista de livros
+         * chamado durante o mount do container
+         */
+        this.props.loadBooks(this.props.query);
+    }
 
+    render() {
+        const { error, isFinished, isLoading, query, queryResult, handlePageChange } = this.props;
+
+        /**
+         * O component List pode receber um elemento que será mostrando em caso de loading ou erro.
+         * Código abaixo usa o variável para guardar um elemento de alerta que será enviado para o component List.
+         * Em caso de sucesso, mensagem nula é enviada.
+         */
         let customMessage = null;
 
+        // em caso de loading, mostra mensagem de carregando
         if (isLoading) {
             customMessage = (
-                <span>Aguarde, carregando resultados...</span>
+                <div className="alert alert-info">
+                    <strong>Aguarde!</strong> Carregando livros...
+                </div>
             );
-        } else if (isFinished && isError) {
+
+            // se já tenha finalizado e erro não seja nulo, mostra mensagem de erro
+        } else if (isFinished && error) {
             customMessage = (
-                <span>Desculpe, ocorreu um erro ao tentar obter os livros.</span>
-            );
-        } else if (isFinished && queryResult.length === 0) {
-            customMessage = (
-                <span>Não foi encontrado nenhum livro.</span>
+                <div className="alert alert-danger">
+                    <strong>Desculpe!</strong> Ocorreu um erro ao tentar obter os livros
+                </div>
             );
         }
 
@@ -44,7 +63,16 @@ export class SearchContainer extends React.Component {
                     </div>
 
                     <div className="row">
-                        <List queryResult={queryResult} query={query} handlePageChange={handlePageChange} Item={BookBox} customMessage={customMessage} />
+                        <List
+                            queryResult={queryResult}
+                            query={query}
+                            handlePageChange={handlePageChange}
+                            isFinished={isFinished}
+                            isLoading={isLoading}
+                            error={error}
+                            Item={BookBox}
+                            customMessage={customMessage}
+                        />
                     </div>
                 </div>
             </main>
@@ -52,9 +80,8 @@ export class SearchContainer extends React.Component {
     }
 }
 
-
 SearchContainer.propTypes = {
-    isError: PropTypes.bool.isRequired,
+    error: PropTypes.object,
     isFinished: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     query: PropTypes.object,
@@ -62,30 +89,40 @@ SearchContainer.propTypes = {
         PropTypes.array,
         PropTypes.object,
     ]),
+    loadBooks: PropTypes.func.isRequired,
     handlePageChange: PropTypes.func.isRequired,
 };
 
-// cria funções com acesso ao dispatch, dispachando actions
+/**
+ * cria funções com acesso ao dispatch, dispachando actions
+ */
 export function mapDispatchToProps(dispatch) {
     return {
+        loadBooks: () => {
+            dispatch(requestLoadSearchAction());
+        },
         handlePageChange: (evt) => {
             if (typeof evt.selected !== "undefined") {
-                dispatch(chageActivePageAction('search', evt.selected));
-                window.scrollTo(0, 0);
+                dispatch(changeActivePageSearchAction(evt.selected));
             }
         },
     };
 }
 
-// usa o reselect para obter os dados salvos no store
+/**
+ * usa o reselect para obter os dados salvos no store
+ * todos os valores são automaticamentes atualizados em caso de alguma alteração na store
+ */
 const mapStateToProps = createStructuredSelector({
-    isError: selectAppSearchIsError(),
+    error: selectAppSearchError(),
     isFinished: selectAppSearchIsFinished(),
     isLoading: selectAppSearchIsLoading(),
     query: selectAppSearchQuery(),
     queryResult: selectAppSearchQueryResult(),
 });
 
-// injeta o dispatch e o state no component SearchContainer
-// react-redux irá obter todos os atributos e funções criadas e injetara no component como props
+/**
+ * injeta o dispatch e o state no container
+ * react-redux irá obter todos os atributos e funções criadas e injetara no component como props
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

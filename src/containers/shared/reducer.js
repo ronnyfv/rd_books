@@ -1,10 +1,17 @@
 import _ from 'lodash';
 
 import {
+    // gerais
     TOGGLE_SIDEBAR,
     SHOW_SIDEBAR,
     HIDE_SIDEBAR,
-    CHANGE_ACTIVE_PAGE,
+
+    // procura
+    CHANGE_ACTIVE_PAGE_SEARCH,
+    CHANGE_ACTIVE_PAGE_FAVORITE,
+    SET_STATUS_SEARCH_LOADING,
+    SET_STATUS_SEARCH_SUCCESS,
+    SET_STATUS_SEARCH_ERROR,
 } from './constants';
 
 /* eslint-disable quote-props, comma-dangle */
@@ -12,33 +19,32 @@ import {
 // Estado inicial da aplicação
 const initialState = {
     loading: false,
-    error: false,
     ui: {
         showSidebar: false,
     },
     search: {
-        isError: false,
+        error: undefined,
         isFinished: false,
         isLoading: false,
         query: {
+            queryString: 'javascript',
             activePage: 0,
-            resultCount: 15,
-            total: 30,
-            skip: 30,
-            orderBy: 'title',
+            resultCount: 5,
+            total: 0,
+            orderBy: 'relevance',
         },
         queryResult: undefined,
     },
     favorite: {
-        isError: false,
+        error: undefined,
         isFinished: false,
         isLoading: false,
         query: {
+            queryString: 'javascript',
             activePage: 0,
-            resultCount: 15,
-            total: 30,
-            skip: 30,
-            orderBy: 'title',
+            resultCount: 5,
+            total: 0,
+            orderBy: 'relevance',
         },
         queryResult: undefined,
     },
@@ -73,12 +79,52 @@ function appReducer(state = initialState, action) {
                 },
             });
 
-        case CHANGE_ACTIVE_PAGE:
+        case CHANGE_ACTIVE_PAGE_SEARCH:
             return _.merge({}, state, {
-                [action.target]: {
+                search: {
                     query: {
                         activePage: action.activePage,
                     }
+                }
+            });
+
+        case CHANGE_ACTIVE_PAGE_FAVORITE:
+            return _.merge({}, state, {
+                favorite: {
+                    query: {
+                        activePage: action.activePage,
+                    }
+                }
+            });
+
+        case SET_STATUS_SEARCH_LOADING:
+            return _.merge({}, state, {
+                [action.target]: {
+                    error: undefined,
+                    isFinished: false,
+                    isLoading: true,
+                }
+            });
+
+        case SET_STATUS_SEARCH_SUCCESS:
+            return _.merge({}, state, {
+                [action.target]: {
+                    error: undefined,
+                    isFinished: true,
+                    isLoading: false,
+                    query: {
+                        total: action.totalItems,
+                    },
+                    queryResult: action.items
+                }
+            });
+
+        case SET_STATUS_SEARCH_ERROR:
+            return _.merge({}, state, {
+                [action.target]: {
+                    error: action.error,
+                    isFinished: true,
+                    isLoading: false,
                 }
             });
 

@@ -19,6 +19,8 @@ main {
   }
 
   .book-list {
+    min-height: 250px;
+
     .book-item {
       margin-bottom: 10px;
       border-radius: 2px;

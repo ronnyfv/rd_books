@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { mount } from 'enzyme';
 
 import { FavoriteContainer, mapDispatchToProps } from '../index';
-import { chageActivePageAction } from '../../shared/actions';
+import { changeActivePageFavoriteAction, requestLoadFavoriteAction } from '../../shared/actions';
 import configureStore from '../../../store';
 
 describe('<FavoriteContainer />', () => {
@@ -17,6 +17,8 @@ describe('<FavoriteContainer />', () => {
         query: {},
         queryResult: [],
         handlePageChange: () => {
+        },
+        loadFavoriteBooks: () => {
         },
     };
 
@@ -42,17 +44,34 @@ describe('<FavoriteContainer />', () => {
                 expect(result.handlePageChange).toBeDefined();
             });
 
-            it('deve invocar chageActivePageAction quando chamado', () => {
+            it('deve invocar changeActivePageFavoriteAction quando chamado', () => {
                 const dispatch = jest.fn();
                 const result = mapDispatchToProps(dispatch);
                 const page = 1;
-                const pageText = 'favorite';
 
                 result.handlePageChange({
                     selected: page,
                 });
 
-                expect(dispatch).toHaveBeenCalledWith(chageActivePageAction(pageText, page));
+                expect(dispatch).toHaveBeenCalledWith(changeActivePageFavoriteAction(page));
+            });
+        });
+
+        describe('loadFavoriteBooks', () => {
+            it('deve conter loadFavoriteBooks', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                expect(result.loadFavoriteBooks).toBeDefined();
+            });
+
+            it('deve invocar requestLoadFavoriteAction quando chamado', () => {
+                const dispatch = jest.fn();
+                const result = mapDispatchToProps(dispatch);
+
+                result.loadFavoriteBooks();
+
+                expect(dispatch).toHaveBeenCalledWith(requestLoadFavoriteAction());
             });
         });
     });

@@ -6,7 +6,8 @@ import {
     showSidebarAction,
     hideSidebarAction,
     toggleSidebarAction,
-    chageActivePageAction
+    changeActivePageFavoriteAction,
+    changeActivePageSearchAction,
 } from '../actions';
 
 describe('appReducer', () => {
@@ -15,33 +16,32 @@ describe('appReducer', () => {
     beforeEach(() => {
         state = {
             loading: false,
-            error: false,
             ui: {
                 showSidebar: false,
             },
             search: {
-                isError: false,
+                error: undefined,
                 isFinished: false,
                 isLoading: false,
                 query: {
+                    queryString: 'javascript',
                     activePage: 0,
-                    resultCount: 15,
-                    total: 30,
-                    skip: 30,
-                    orderBy: 'title',
+                    resultCount: 5,
+                    total: 0,
+                    orderBy: 'relevance',
                 },
                 queryResult: undefined,
             },
             favorite: {
-                isError: false,
+                error: undefined,
                 isFinished: false,
                 isLoading: false,
                 query: {
+                    queryString: 'javascript',
                     activePage: 0,
-                    resultCount: 15,
-                    total: 30,
-                    skip: 30,
-                    orderBy: 'title',
+                    resultCount: 5,
+                    total: 0,
+                    orderBy: 'relevance',
                 },
                 queryResult: undefined,
             },
@@ -87,23 +87,39 @@ describe('appReducer', () => {
         expect(appReducer(state, toggleSidebarAction())).toEqual(stateAfter);
     });
 
-    it('deve receber e tratar a action chageActivePageAction', () => {
+    it('deve receber e tratar a action changeActivePageFavoriteAction', () => {
         const page = 1;
-        const pageText = 'search';
 
         const action = {
-            target: 'search',
-            activePage: 1,
+            activePage: page,
         };
 
         const stateAfter = _.merge({}, state, {
-            [action.target]: {
+            favorite: {
                 query: {
                     activePage: action.activePage,
                 },
             },
         });
 
-        expect(appReducer(state, chageActivePageAction(pageText, page))).toEqual(stateAfter);
+        expect(appReducer(state, changeActivePageFavoriteAction(page))).toEqual(stateAfter);
+    });
+
+    it('deve receber e tratar a action changeActivePageSearchAction', () => {
+        const page = 1;
+
+        const action = {
+            activePage: page,
+        };
+
+        const stateAfter = _.merge({}, state, {
+            search: {
+                query: {
+                    activePage: action.activePage,
+                },
+            },
+        });
+
+        expect(appReducer(state, changeActivePageSearchAction(page))).toEqual(stateAfter);
     });
 });

@@ -5,11 +5,10 @@ import { Link } from 'react-router';
 function BookBox(props) {
     const { item } = props;
 
-    const thumb = item.volumeInfo.imageLinks.thumbnail;
-    const title = item.volumeInfo.title;
-    const description = item.volumeInfo.description;
-    const authors = _.map(item.volumeInfo.authors).join(', ');
-    const publishedDate = item.volumeInfo.publishedDate;
+    const { id, title, publishedDate } = item;
+    const thumb = item.imageLinks ? item.imageLinks.thumbnail : null;
+    const description = item.description ? item.description.substr(0, 250) : 'Não disponível';
+    const authors = _.map(item.authors).join(', ');
 
     return (
         <div className="book-item group">
@@ -18,7 +17,7 @@ function BookBox(props) {
             </div>
             <div className="col span_4_of_5 info">
                 <div className="title">
-                    <Link to={'/livro'}>{title}</Link>
+                    <Link to={`/livro/${id}`}>{title}</Link>
                 </div>
                 <div className="author">
                     {authors} - {publishedDate}
