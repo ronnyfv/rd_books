@@ -11,6 +11,8 @@ Esse projeto usa as seguintes tecnologias:
 * React
 * React Router
 * Redux
+* Redux-Saga
+* Lodash
 * Jest, para executar os testes, oferece uma configuração mais fácil que import karma, mocha e todas outras bibliotecas
 * Reselect, para acessar os dados da store e receber atualizações quando os dados forem alterados
 * Webpack, gerar as builds, adicionar recursos hot reload em caso de desenvolvimento
@@ -61,7 +63,6 @@ A build de produção deleta a pasta `build` e gera o bundle usando as configura
 * /dev (código gerado para desenvolvimento)
 * /build (código gerado para produção)
 * /src (código fonte do projeto)
-* init.php (gerar arquivo .db no diretório 'data')
 * .babelrc (configs para o babel)
 * eslintrc.json (lint configs para editor/ide e webpack)
 * jest.config.json (configs para o jest)
